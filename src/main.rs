@@ -15,7 +15,6 @@ fn get_calibration_value(line: &str) -> Option<u32> {
     let y = 
     line.chars()
     .filter(|x| x.is_numeric());
-    // .map(|x| x.to_digit(10).unwrap());
 
 
     let mut z = y.clone();
