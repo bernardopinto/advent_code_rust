@@ -1,25 +1,6 @@
 use regex::Regex;
 fn main() {
 
-    // enum Color {
-    //     Red,
-    //     Green,
-    //     Blue,
-    // }
-
-    // struct CubeCount {
-    //     color: Color,
-    //     count: u32,
-    // }
-
-    // struct Game {
-    //     id: u32,
-    //     red_cubes: u32,
-    //     green_cubes: u32,
-    //     blue_cubes: u32,
-    // }
-    
-
     fn calculate_game(game_str: &str) -> Option<i32> {
         let re = Regex::new(r"Game (?<idx>\d+):(?<rest>.+?)$").unwrap();
 
@@ -31,9 +12,7 @@ fn main() {
         let rest = capture_game.name("rest").unwrap().as_str();
 
         let included = String::from(rest).split(";").into_iter().map(|games| {
-            println!("Printing games: {}", games);
             let list_bool = games.split(",").into_iter().map(|game| {
-                println!("{}", game);
                 let capture = game_regex.captures(game).unwrap();
                 let count = capture.name("n").unwrap().as_str().parse::<i32>().unwrap();
                 let color = capture.name("color").unwrap().as_str();
@@ -45,9 +24,9 @@ fn main() {
                         _ => false,
                 }
             });
-            list_bool.reduce(|acc, e| acc && e).unwrap()
+            list_bool.reduce(|acc, e| acc && e)
 
-        }).reduce(|acc, b| acc && b)?;
+        }).flatten().reduce(|acc, e| acc && e).unwrap_or_else(|| false);
 
 
     if included {
